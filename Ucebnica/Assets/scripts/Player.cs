@@ -10,9 +10,10 @@ public class Player : MonoBehaviour
 
     float PlayerSpeed = 5;
     GameObject PlayerHand = null;
-
+    
 
     bool spaceAvaiable = true;
+    GameObject PickUpCollisionObject = null;
     void Start()
     {
         CHC = GetComponent<CharacterController>();
@@ -56,35 +57,63 @@ public class Player : MonoBehaviour
 
 
         //nosenie
+
+        if (!Input.GetKey(KeyCode.Space))
+        {
+            spaceAvaiable = true;
+        }
+
+
         if (PlayerHand != null)
         {
             PlayerHand.transform.position = this.gameObject.transform.position + new Vector3(0,1f,0);
             if (Input.GetKey(KeyCode.Space) && spaceAvaiable)
             {
-                PlayerHand.transform.position = this.gameObject.transform.position + new Vector3(0, 0, 0);
+                PlayerHand.transform.position = this.gameObject.transform.position + new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f));
                 PlayerHand = null;
-
+                spaceAvaiable = false;
+                PickUpCollisionObject = null;
             }
         }
-        if (!Input.GetKey(KeyCode.Space))
-        {
-            spaceAvaiable = true;
-        }
         
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.tag == "PickUp")
+
+        if (PickUpCollisionObject != null)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+               
                 if (PlayerHand == null && spaceAvaiable)
                 {
-                    PlayerHand = other.gameObject;
+                    if (PickUpCollisionObject != null)
+                    {
+                        PlayerHand = PickUpCollisionObject;
+                    }
+                    
                     spaceAvaiable = false;
                 }
             }
         }
+        
+
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        
+        if(other.tag == "PickUp")
+        {
+            PickUpCollisionObject = other.gameObject;
+            
+        }
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "PickUp")
+        {
+            PickUpCollisionObject = null;
+        }
+            
     }
 }
