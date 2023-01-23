@@ -2,10 +2,33 @@
 INSERT @ table_name (column1, column2, column3, ...)
 @ (value1, value2, value3, ...) ;
 ##
-INSERT INTO table_name (column1, column2, column3, ...)
-VALUES  value1, value2, value3, ...) ;
+@ INTO table_name ( @ , column2, column3, ...)
+VALUES  (	@ , value2, value3, ...) ;
 ##
 SELECT column_name(s)
-FROM table1
-INNER JOIN table2
-ON table1.column_name = table2.column_name;
+FROM @
+INNER @ table2
+@ table1.column_name = table2.column_name;
+##
+SELECT column1, @ , ...
+@ table_name
+WHERE columnN @ pattern;
+##
+SELECT @ (s)
+FROM table_name
+@ column_name @ (SELECT @ );	
+##
+SELECT @ (s) FROM @
+UNION
+SELECT column_name(s) @ @ ;
+##
+@ column_name(s)
+@ table_name
+WHERE @
+GROUP BY column_name(s)
+@ @ column_name(s);
+##
+SELECT @ , column2, column3, ...
+@ @ [IN @ ]
+FROM oldtable
+WHERE @ ;

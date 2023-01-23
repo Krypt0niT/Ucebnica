@@ -7,8 +7,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
 
-    int level = 1;
-    int levelQuestions = 2;
+    int level = 8;
+    int levelQuestions = 0  ;
     List<string> blocks = new List<string>();
 
     int lineCount = 0;
@@ -41,14 +41,7 @@ public class Spawner : MonoBehaviour
             colors[color].color = new Color(Random.Range(0.2f, 1), Random.Range(0.2f, 1), Random.Range(0.2f, 1), 255);
 
         }
-        List<GameObject> spawned = new List<GameObject>();
-        for (int pick = 0; pick < levelQuestions; pick++)
-        {
-            
-            GameObject rnd = spawnPoints[(int)Random.Range(0, spawnPoints.Count)];
-            spawns[pick].transform.position = spawnPoints[(int)Random.Range(0, spawnPoints.Count)].transform.position  + new Vector3(Random.Range(-1.5f, 1.5f),Random.Range(-0.05f,0.05f), Random.Range(-1.5f, 1.5f));
-            spawns[pick].SetActive(true);
-        }
+        
         string[] answers = System.IO.File.ReadAllLines("Assets/sources/answers.txt");
 
         int sharpCount = 0;
@@ -60,7 +53,18 @@ public class Spawner : MonoBehaviour
                 blocks.Add(answer);
             }
         }
+        levelQuestions = blocks.Count;
 
+
+        List<GameObject> spawned = new List<GameObject>();
+        for (int pick = 0; pick < levelQuestions; pick++)
+        {
+
+            GameObject rnd = spawnPoints[(int)Random.Range(0, spawnPoints.Count)];
+            spawns[pick].transform.position = spawnPoints[(int)Random.Range(0, spawnPoints.Count)].transform.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-0.05f, 0.05f), Random.Range(-1.5f, 1.5f));
+            spawns[pick].SetActive(true);
+            print(pick);
+        }
         string[] lines = System.IO.File.ReadAllLines("Assets/sources/rounds.txt");
         sharpCount = 0;
 
@@ -68,7 +72,6 @@ public class Spawner : MonoBehaviour
         {
             
             if(line == "##") { sharpCount++; continue; }
-            //print(line);
             if (sharpCount == level)
             {
                 
@@ -88,7 +91,9 @@ public class Spawner : MonoBehaviour
                             parts[i] == "SELECT" ||
                             parts[i] == "INNER" ||
                             parts[i] == "JOIN" ||
-                            parts[i] == "ON")
+                            parts[i] == "ON" ||
+                            parts[i] == "FROM"
+                            )
                         {
                             Code.text += CT["blue"];
                         }
@@ -168,7 +173,19 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < blocks.Count; i++)
         {
             spawns[i].GetComponent<block>().Type = blocks[i];
-            print(blocks[i]);
+            spawns[i].GetComponent<block>().index = i;
+            GameObject.Find("manager").GetComponent<manager>().blocksCount++;
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if(GameObject.Find("lvl" + (i + 1)) != null)
+            {
+                if(i+1 != level)
+                {
+                    GameObject.Find("lvl" + (i + 1)).SetActive(false);
+                }
+            }
+
         }
 
     }   
