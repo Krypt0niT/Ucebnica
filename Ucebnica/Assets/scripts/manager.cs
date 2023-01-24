@@ -12,6 +12,7 @@ public class manager : MonoBehaviour
     public int level = 1;
 
     [SerializeField] GameObject spawner;
+    [SerializeField] List<GameObject> levels = new List<GameObject>();
 
     float waiterTick = 0;
     float waiter = 2;
@@ -39,6 +40,20 @@ public class manager : MonoBehaviour
             if(waiterTick>= waiter)
             {
 
+                Destroy(GameObject.FindObjectOfType<Spawner>().gameObject);
+                if(level< 8)
+                {
+                    level++;
+                    blocksCount = 0;
+                    Instantiate(spawner);
+                }
+                else
+                {
+                    level = 1;
+                    blocksCount = 0;
+                    Instantiate(spawner);
+                }
+                waiterTick = 0;
             }
         }
         else
@@ -48,6 +63,15 @@ public class manager : MonoBehaviour
 
 
 
-        GameObject.Find("LVLCOUNTER").GetComponent<TextMeshPro>().text = "LVL"+GameObject.Find("Spawner").GetComponent<Spawner>().level;
+        GameObject.Find("LVLCOUNTER").GetComponent<TextMeshPro>().text = "LVL"+level;
+
+        for (int i = 0; i < levels.Count; i++)
+        {
+            
+                levels[i].SetActive(false);
+        }
+
+        levels[level-1].SetActive(true);
     }
+
 }

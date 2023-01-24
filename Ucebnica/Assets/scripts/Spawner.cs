@@ -179,17 +179,7 @@ public class Spawner : MonoBehaviour
             spawns[i].GetComponent<block>().index = i;
             GameObject.Find("manager").GetComponent<manager>().blocksCount++;
         }
-        for (int i = 0; i < 10; i++)
-        {
-            if(GameObject.Find("lvl" + (i + 1)) != null)
-            {
-                if(i+1 != level)
-                {
-                    GameObject.Find("lvl" + (i + 1)).SetActive(false);
-                }
-            }
-
-        }
+       
 
     }
     private void Update()
