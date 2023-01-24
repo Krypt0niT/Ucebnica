@@ -7,7 +7,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
 
-    int level = 8;
+    public int level;
     int levelQuestions = 0  ;
     List<string> blocks = new List<string>();
 
@@ -17,11 +17,14 @@ public class Spawner : MonoBehaviour
     [SerializeField] List<GameObject> spawnPoints = new List<GameObject>();
 
     [SerializeField] TextMeshPro Code;
-    TMP_Glyph glyphInfo = new TMP_Glyph();
 
     Dictionary<string, string> CT = new Dictionary<string, string>();
-    
 
+
+    private void Awake()
+    {
+        level = GameObject.Find("manager").GetComponent<manager>().level;
+    }
     void Start()
     {
         //nacitanie hodnoput do slovnika
@@ -188,9 +191,17 @@ public class Spawner : MonoBehaviour
 
         }
 
-    }   
-    void Update()
-    {
-        
     }
+    private void Update()
+    {
+        if (GameObject.Find("manager").GetComponent<manager>().blocksCount == GameObject.Find("manager").GetComponent<manager>().blocksRight)
+        {
+            for (int color = 0; color < colors.Count; color++)
+            {
+                colors[color].color = new Color(0, 1,0);
+
+            }
+        }
+    }
+
 }
